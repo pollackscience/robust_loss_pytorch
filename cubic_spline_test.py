@@ -122,7 +122,7 @@ class TestCubicSpline:
 
     # Get the interpolated values and derivatives.
     y, dy_dx = self._interpolate1d(x, values, tangents)
-    
+
     # Check that the interpolated values of all queries lies at the midpoint of
     # its surrounding knot values.
     y_true = (values[0:-1] + values[1:]) / 2.
