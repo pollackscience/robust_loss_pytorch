@@ -23,6 +23,7 @@ and for sampling from the distribution.
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+import pathlib
 
 import numbers
 
@@ -147,12 +148,17 @@ def log_base_partition_function(alpha):
   # Load the values, tangents, and x-coordinate scaling of a spline that
   # approximates the partition function. This was produced by running
   # the script in fit_partition_spline.py
-  with util.get_resource_as_file(
-      'data/partition_spline.npz') as spline_file:
-    with np.load(spline_file, allow_pickle=False) as f:
-      x_scale = torch.as_tensor(f['x_scale'])
-      values = torch.as_tensor(f['values'])
-      tangents = torch.as_tensor(f['tangents'])
+
+  # Could be any dot-separated package/module name or a "Requirement"
+  path = str(pathlib.Path(__file__).parents[1])+'/data/partition_spline.npz'
+  # resource_path = '/'.join(('data', 'partition_spline.npz'))  # Do not use os.path.join()
+  #with util.get_resource_as_file(path) as spline_file:
+      #'data/partition_spline.npz') as spline_file:
+    #with open(resource_file, 'r') as spline_file:
+  with np.load(path, allow_pickle=False) as f:
+    x_scale = torch.as_tensor(f['x_scale'])
+    values = torch.as_tensor(f['values'])
+    tangents = torch.as_tensor(f['tangents'])
 
   alpha = torch.as_tensor(alpha)
   assert (alpha >= 0).all()
